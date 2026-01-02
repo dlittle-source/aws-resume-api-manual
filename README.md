@@ -6,6 +6,15 @@ README.md
 
 **Fictitious Company:** NimbusHire Inc. – a recruiting tech company modernizing candidate profiles.
 
+1. **AWS Lambda** A serverless compute service that runs your code without provisioning or managing servers.   
+
+2. **API Gateway** A fully managed service to create, deploy, and manage APIs that act as the “front door” for applications to access backend services.
+
+3. **DynamoDB** A fully managed NoSQL database that provides fast and predictable performance at any scale.
+
+4. **Programmatic access** The ability to interact with AWS services using code or scripts instead of the AWS Management Console.
+   
+
 ```mermaid
 flowchart LR
     User[Client / Browser / curl]
