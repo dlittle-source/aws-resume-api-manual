@@ -11,4 +11,3 @@ flowchart LR
     Lambda --> CloudWatch
     Lambda -->|JSON Response| APIGW
     APIGW -->|HTTP 200| User
-
