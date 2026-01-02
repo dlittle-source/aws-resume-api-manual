@@ -6,7 +6,6 @@ README.md
 
 **Fictitious Company:** NimbusHire Inc. – a recruiting tech company modernizing candidate profiles.
 
-
 ```mermaid
 flowchart LR
     User[Client / Browser / curl]
@@ -21,6 +20,7 @@ flowchart LR
     Lambda --> CloudWatch
     Lambda -->|JSON Response| APIGW
     APIGW -->|HTTP 200| User
+
 
 
 
