@@ -1,6 +1,3 @@
-# aws-resume-api-manual
-Manual AWS serverless Resume API using Lambda, API Gateway, and DynamoDB to demonstrate core cloud fundamentals.
-
 flowchart LR
     User[Client / Browser / curl]
     APIGW[Amazon API Gateway<br/>REST API]
