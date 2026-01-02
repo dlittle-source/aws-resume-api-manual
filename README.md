@@ -15,3 +15,8 @@ flowchart LR
     Lambda -->|JSON Response| APIGW
     APIGW -->|HTTP 200| User
 
+**Project: AWS Resume API (Manual Deployment)**
+
+**Overview**: This project is a **serverless Resume API** built manually on AWS using **Lambda, API Gateway, and DynamoDB**.  
+It demonstrates a foundational understanding of **AWS core services, serverless architecture, and manual deployment via AWS CLI / Console** before automating infrastructure with Terraform or CI/CD pipelines.
+
