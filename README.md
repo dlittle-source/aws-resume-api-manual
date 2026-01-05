@@ -17,6 +17,9 @@ README.md
 
 4. **Programmatic access:**
    - The ability to interact with AWS services using code or scripts instead of the AWS Management Console.
+  
+5. **AWS CloudWatch:**
+   - CloudWatch was activated to provide observability and enhance visibility for both Lambda and API Gateway.
    
 
 ```mermaid
