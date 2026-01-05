@@ -45,6 +45,20 @@ aws apigateway create-deployment --rest-api-id yyn7p6mltb --stage-name prod --re
 Final Public Invoke URL
 https://yyn7p6mltb.execute-api.us-east-1.amazonaws.com/prod/resumes
 
+Intergrate CloudWatch with API Gateway a Lambda
+aws iam create-role --role-name APIGatewayCloudWatchRole --assume-role-policy-document file://apigateway-cloudwatch-trust.json --no-cli-pager
+Verify Role Creation: aws iam get-role --role-name APIGatewayCloudWatchRole --no-cli-pager
+
+aws iam attach-role-policy --role-name APIGatewayCloudWatchRole --policy-arn arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs --no-cli-pager
+Verify Role Creation: aws iam list-attached-role-policies --role-name APIGatewayCloudWatchRole --no-cli-pager  
+
+aws apigateway update-account --patch-operations op=replace,path=/cloudwatchRoleArn,value=arn:aws:iam::0123456789:role/APIGatewayCloudWatchRole --region us-east-1 --no-cli-pager
+
+This will return just the ARN of the role, for example:
+aws iam get-role --role-name APIGatewayCloudWatchRole --query "Role.Arn" --output text --no-cli-pager
+
+aws apigateway update-stage --rest-api-id YOUR_API_ID --stage-name prod --patch-operations op=replace,path=/*/*/logging/loglevel,value=INFO op=replace,path=/*/*/logging/dataTrace,value=true --region us-east-1 --no-cli-pager
+
 Cleanup Commands
 Delete DynamoDB Table
 aws dynamodb delete-table --table-name resumes --region us-east-1 --no-cli-pager
@@ -54,6 +68,7 @@ aws lambda delete-function --function-name apigateway-test-demo --region us-east
 
 Delete API Gateway (REST API)
 aws apigateway delete-rest-api --rest-api-id rko1yd24qh --region us-east-1
+
 
 
 
