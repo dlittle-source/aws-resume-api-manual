@@ -20,6 +20,8 @@ README.md
   
 5. **AWS CloudWatch:**
    - CloudWatch was activated to provide observability and enhance visibility for both Lambda and API Gateway.
+  
+   **Conclusion:** This project demonstrated a serverless API on AWS using Lambda and API Gateway, with CloudWatch ensuring effective monitoring and observability.
    
 
 ```mermaid
