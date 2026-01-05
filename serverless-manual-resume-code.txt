@@ -15,11 +15,20 @@ aws dynamodb create-table --table-name resumes --attribute-definitions Attribute
 Add data to DynamoDB Table
 aws dynamodb batch-write-item --profile default --request-items file://resume-item.json --region us-east-1 --no-cli-pager
 
+Package Lambda Source Code
+Compress-Archive -Path app.py -DestinationPath lambda.zip
+
 Create AWS Lambda Function
 aws lambda create-function --function-name resume-api --runtime python3.13 --role arn:aws:iam::12345678:role/lambda-resume-role --handler app.handler --zip-file fileb://lambda.zip --no-cli-pager
 
-Package Lambda Source Code
-Compress-Archive -Path app.py -DestinationPath lambda.zip
+Creating a new HTTP API
+aws apigatewayv2 create-api --name "ResumeAPI" --protocol-type HTTP --target arn:aws:lambda:us-east-1:123456789012:function:ResumeLambda --region us-east-1
+
+Grant Permissions for API Gateway to Invoke Lambda
+aws lambda add-permission --function-name ResumeLambda --statement-id apigateway-invoke --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:123456789012:api-id/*/GET/resumes/* --region us-east-1
+
+Deploy the API
+aws apigatewayv2 create-stage --api-id api-id --stage-name prod --auto-deploy
 
 Cleanup Commands
 Delete DynamoDB Table
@@ -30,6 +39,7 @@ aws lambda delete-function --function-name apigateway-test-demo --region us-east
 
 Delete API Gateway (REST API)
 aws apigateway delete-rest-api --rest-api-id rko1yd24qh --region us-east-1
+
 
 
 
