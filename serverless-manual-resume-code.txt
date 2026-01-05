@@ -21,14 +21,29 @@ Compress-Archive -Path app.py -DestinationPath lambda.zip
 Create AWS Lambda Function
 aws lambda create-function --function-name resume-api --runtime python3.13 --role arn:aws:iam::12345678:role/lambda-resume-role --handler app.handler --zip-file fileb://lambda.zip --no-cli-pager
 
-Creating a new HTTP API
-aws apigatewayv2 create-api --name "ResumeAPI" --protocol-type HTTP --target arn:aws:lambda:us-east-1:123456789012:function:ResumeLambda --region us-east-1
+Create a public REST API
+aws apigateway create-rest-api --name ResumeRestAPI --endpoint-configuration types=REGIONAL --region us-east-1
 
-Grant Permissions for API Gateway to Invoke Lambda
-aws lambda add-permission --function-name ResumeLambda --statement-id apigateway-invoke --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:123456789012:api-id/*/GET/resumes/* --region us-east-1
+Get the root resource ID
+aws apigateway get-rest-apis --region us-east-1 --no-cli-pager
 
-Deploy the API
-aws apigatewayv2 create-stage --api-id api-id --stage-name prod --auto-deploy
+Create a resumes resource
+aws apigateway create-resource --rest-api-id yyn7p6mltb --parent-id dve808sgl8 --path-part resumes --region us-east-1 --no-cli-pager
+
+Create a GET method (no auth = public)
+aws apigateway put-method --rest-api-id yyn7p6mltb --resource-id smbnpx --http-method GET --authorization-type NONE --region us-east-1 --no-cli-pager
+
+Integrate REST API with Lambda
+aws apigateway put-integration --rest-api-id yyn7p6mltb --resource-id smbnpx --http-method GET --type AWS_PROXY --integration-http-method POST --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:0123456789:function:resume-api/invocations --region us-east-1 --no-cli-pager
+
+Allow API Gateway to invoke Lambda
+aws lambda add-permission --function-name resume-api --statement-id apigateway-rest-invoke --action lambda:InvokeFunction --principal apigateway.amazonaws.com --source-arn arn:aws:execute-api:us-east-1:0123456789:yyn7p6mltb/*/GET/resumes --region us-east-1 --no-cli-pager
+
+Deploy the REST API
+aws apigateway create-deployment --rest-api-id yyn7p6mltb --stage-name prod --region us-east-1 --no-cli-pager
+
+Final Public Invoke URL
+https://yyn7p6mltb.execute-api.us-east-1.amazonaws.com/prod/resumes
 
 Cleanup Commands
 Delete DynamoDB Table
@@ -39,7 +54,6 @@ aws lambda delete-function --function-name apigateway-test-demo --region us-east
 
 Delete API Gateway (REST API)
 aws apigateway delete-rest-api --rest-api-id rko1yd24qh --region us-east-1
-
 
 
 
